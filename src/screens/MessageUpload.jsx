@@ -3,9 +3,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
+import { Toaster, toast } from "react-hot-toast";
 
 function MessageUpload() {
   const navigation = useNavigate();
+  const msgText = React.useRef();
 
   const {
     loginWithRedirect,
@@ -19,31 +22,62 @@ function MessageUpload() {
 
   React.useLayoutEffect(() => {
     return () => {
-      if (!isAuthenticated) {
-        navigation("/");
-      }
+      validateAccess();
     };
   }, []);
 
-  const test = async () => {
+  const validateAccess = async () => {
+    if (!isAuthenticated) {
+      toast.error("Please login to access this page");
+      navigation("/");
+    }
+
+    const token = await getAccessTokenSilently();
+    const decoded = jwt_decode(token);
+
+    if (decoded.permissions.length === 0) {
+      navigation("/admin-contact");
+      // toast.error("Please contact administator to get access");
+    }
+  };
+
+  const onClickHandler = async () => {
+    if (msgText.current.value === "") {
+      toast.error("Please enter a message");
+      return;
+    }
+
     const token = await getAccessTokenSilently();
 
-    // console.log(token);
-
     axios
-      .get("http://localhost:8080/worker-validate", {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      .post(
+        "http://localhost:8080/worker-validate",
+        {
+          message: msgText.current.value,
+          email: user.email,
         },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        const responseMessage = res.data.message || "Successfull";
+        toast.success(responseMessage);
+        msgText.current.value = "";
+        console.log(res.data);
       })
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err));
-
-    // console.log(getAccessTokenSilently);
+      .catch((err) => {
+        const errorMsg = err.response.data.message || "Something went wrong";
+        toast.error(errorMsg);
+        console.log(err);
+      });
   };
 
   return (
     <div>
+      <Toaster />
       <p className="text-center mt-10 text-xl font-bold">
         Message Upload (Workers Portal)
       </p>
@@ -68,6 +102,7 @@ function MessageUpload() {
             id="message"
             type="text"
             placeholder="type here"
+            ref={msgText}
           />
         </div>
 
@@ -75,7 +110,7 @@ function MessageUpload() {
           <button
             className="bg-blue hover:bg-blue-dark text-black font-bold py-2 px-4 rounded bg-cyan-100"
             type="button"
-            onClick={test}
+            onClick={onClickHandler}
           >
             Upload
           </button>

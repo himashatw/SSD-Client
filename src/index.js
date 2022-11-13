@@ -6,6 +6,8 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./screens/Login";
 import Messages from "./screens/MessageUpload";
+import AccessRequired from "./screens/AccessRequired";
+import FileUpload from "./screens/FileUpload";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +17,15 @@ const router = createBrowserRouter([
   {
     path: "messages",
     element: <Messages />,
+  },
+  ,
+  {
+    path: "files",
+    element: <FileUpload />,
+  },
+  {
+    path: "admin-contact",
+    element: <AccessRequired />,
   },
 ]);
 
