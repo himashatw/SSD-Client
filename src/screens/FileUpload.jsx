@@ -97,17 +97,20 @@ function FileUpload() {
       <Toaster />
 
       <p className="text-center mt-10 text-xl font-bold">
-        File Upload (Managers Portal)
+        File/Message Upload (Managers Portal)
       </p>
 
-      <button
-        onClick={() => {
-          logout();
-          navigation("/");
-        }}
-      >
-        Logout
-      </button>
+      <div className="justify-end flex">
+        <button
+          className="bg-red-500 p-2 rounded text-white mt-5 mr-5"
+          onClick={() => {
+            logout();
+            navigation("/");
+          }}
+        >
+          Log out
+        </button>
+      </div>
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col mt-10 w-2/3 mx-auto my-auto">
         <div className="mb-4">
           <label
@@ -135,7 +138,7 @@ function FileUpload() {
           </button>
         </div>
       </div>
-
+      <hr />
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col mt-10 w-2/3 mx-auto my-auto">
         <div className="mb-4">
           <label

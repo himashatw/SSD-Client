@@ -83,6 +83,7 @@ function Login() {
     <div>
       <Toaster />
       <p className="text-center mt-10 text-xl font-bold">Login</p>
+      <hr />
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col mt-10 w-2/3 mx-auto my-auto">
         <div className="flex items-center justify-center">
           <button
@@ -90,19 +91,19 @@ function Login() {
             type="button"
             onClick={loginWithPopup}
           >
-            Sign In with Popup
+            Sign In/Sign Up with Popup
           </button>
         </div>
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center mt-10">
           <button
             className="bg-blue hover:bg-blue-dark text-black font-bold py-2 px-4 rounded bg-cyan-100"
             type="button"
             onClick={loginWithRedirect}
           >
-            Sign In with Redirect
+            Sign In/Sign Up with Redirect
           </button>
         </div>
-        <div className="flex items-center justify-center">
+        {/* <div className="flex items-center justify-center">
           <button
             className="bg-blue hover:bg-blue-dark text-black font-bold py-2 px-4 rounded bg-cyan-100"
             type="button"
@@ -110,10 +111,10 @@ function Login() {
           >
             Log out
           </button>
-        </div>
+        </div> */}
 
-        {isAuthenticated && <h3>user is {JSON.stringify(user, null, 2)}</h3>}
-        <h3>
+        {/* {isAuthenticated && <h3>user is {JSON.stringify(user, null, 2)}</h3>} */}
+        {/* <h3>
           user is{" "}
           {isAuthenticated ? (
             <span className="text-green-500">Authenticated</span>
@@ -136,7 +137,7 @@ function Login() {
           }}
         >
           Call MSGS
-        </button>
+        </button> */}
       </div>
     </div>
   );
